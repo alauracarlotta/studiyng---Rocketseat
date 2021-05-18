@@ -25,11 +25,13 @@ function customValidation(event) {
             // se não for customError
             // então verifica se tem erro
 
-            if (error != "customError" && field.validity[error]) {
+            if (field.validity[error] && !field.validity.valid) {
 
                 foundError = error;
             }
         }
+
+        // console.log(foundError);
 
         return foundError;
     }
@@ -39,20 +41,24 @@ function customValidation(event) {
     const error = verifyErrors();
     console.log("Error Exists", error);
 
-    /* if (error){
+    const spanError = field.parentNode.querySelector("span.error");
 
-        // trocar mensagem de required
-        field.setCustomValidity("Esse campo é obrigatório");
+    if (error){
+
+        spanError.classList.add("active");
+        spanError.innerHTML = "Campo Obrigatório!";
 
     } else {
 
-        field.setCustomValidity("");
-    } */
+        spanError.classList.remove("active");
+        spanError.innerHTML = "";
+    }
 }
 
 for (let field of fields) {
     // of - lista de campos
     field.addEventListener("invalid", customValidation)
+    field.addEventListener("blur", customValidation)
 }
 
 

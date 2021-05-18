@@ -1,6 +1,14 @@
+// Seleciona todas as tags com o elemento 'required"
 
+const fields = document.querySelectorAll("[required]");
+// console.log(fields);
 
+for (let field of fields) {
 
+    field.addEventListener("invalid", event => {
+        console.log("campo inválido");
+    })
+}
 
 
 

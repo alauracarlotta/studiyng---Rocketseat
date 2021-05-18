@@ -30,6 +30,25 @@ function validateField(field) {
         return foundError;
     }
 
+
+    // console.log(field.validity)
+    function customMessage(typeError) {
+
+        const messages = {
+            text: {
+                valueMissing: "Campo nome obrigatório!"
+            },
+
+            email: {
+                valueMissing: "Campo e-mail obrigatório!",
+                typeMismatch: "Insira um e-mail válido!"
+            }
+        }
+
+        return messages[field.type][typeError]
+
+    }
+
     function setCustomMessage(message) {
 
         const spanError = field.parentNode.querySelector("span.error");
@@ -49,16 +68,21 @@ function validateField(field) {
 
     return function () {
 
-        if (verifyErrors()){
+        const error = verifyErrors();
 
-            setCustomMessage("Campo Obrigatório!");
+        if (error){
+
+            const message = customMessage(error);
+            setCustomMessage(message);
 
         } else {
 
+            field.style.borderColor = "green";
             setCustomMessage();
         }
     };
 }
+
 
 function customValidation(event) {
     
@@ -69,9 +93,11 @@ function customValidation(event) {
 
     // console.log("Error Exists", error);
 
-    
-}
+    const validation = validateField(field);
+    // console.log(validation);
 
+    validation();
+}
 
 
 for (let field of fields) {
@@ -86,9 +112,6 @@ for (let field of fields) {
 
     field.addEventListener("blur", customValidation);
 }
-
-
-
 
 
 document.querySelector("form")

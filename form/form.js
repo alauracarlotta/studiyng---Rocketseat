@@ -1,13 +1,53 @@
 // Seleciona todas as tags com o elemento 'required"
-
 const fields = document.querySelectorAll("[required]");
 // console.log(fields);
 
-for (let field of fields) {
+function customValidation(event) {
+    const field = event.target;
+    //console.log(field.validity)
 
-    field.addEventListener("invalid", event => {
-        console.log("campo inválido");
-    })
+
+
+    // lógica para verificar se existem erros
+    function verifyErrors() {
+
+        let foundError = false;
+
+        for(let error in field.validity) {
+            // in - lista de objetos
+
+            //console.log(error);
+            // console.log(field.validity[error])
+
+            // se não for customError
+            // então verifica se tem erro
+
+            if (error != "customError" && field.validity[error]) {
+
+                foundError = error;
+            }
+        }
+
+        return foundError;
+    }
+    
+    const error = verifyErrors();
+    console.log("Error Exists", error);
+
+    if (error){
+
+        // trocar mensagem de required
+        field.setCustomValidity("Esse campo é obrigatório");
+
+    } else {
+
+        field.setCustomValidity("");
+    }
+}
+
+for (let field of fields) {
+    // of - lista de campos
+    field.addEventListener("invalid", customValidation)
 }
 
 

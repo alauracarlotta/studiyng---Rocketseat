@@ -2,14 +2,8 @@
 const fields = document.querySelectorAll("[required]");
 // console.log(fields);
 
-function customValidation(event) {
-    
-    // eliminar o bubble
-    event.preventDefault();
-    
-    const field = event.target;
-    //console.log(field.validity)
 
+function validateField(field) {
 
     // lógica para verificar se existem erros
     function verifyErrors() {
@@ -36,50 +30,62 @@ function customValidation(event) {
         return foundError;
     }
 
+    function setCustomMessage(message) {
+
+        const spanError = field.parentNode.querySelector("span.error");
+
+        if (message) {
+
+            spanError.classList.add("active");
+            spanError.innerHTML = message;
+
+        } else {
+
+            spanError.classList.remove("active");
+            spanError.innerHTML = "";
+        }
+        
+    }
+
+    return function () {
+
+        if (verifyErrors()){
+
+            setCustomMessage("Campo Obrigatório!");
+
+        } else {
+
+            setCustomMessage();
+        }
+    };
+}
+
+function customValidation(event) {
+    
+    const field = event.target;
+    //console.log(field.validity)
+
+    // console.log(validateField(field));
+
+    // console.log("Error Exists", error);
 
     
-    const error = verifyErrors();
-    console.log("Error Exists", error);
-
-    const spanError = field.parentNode.querySelector("span.error");
-
-    if (error){
-
-        spanError.classList.add("active");
-        spanError.innerHTML = "Campo Obrigatório!";
-
-    } else {
-
-        spanError.classList.remove("active");
-        spanError.innerHTML = "";
-    }
 }
+
+
 
 for (let field of fields) {
     // of - lista de campos
-    field.addEventListener("invalid", customValidation)
-    field.addEventListener("blur", customValidation)
+    field.addEventListener("invalid", event => {
+
+        // eliminar o bubble
+        event.preventDefault();
+
+        customValidation(event);
+    });
+
+    field.addEventListener("blur", customValidation);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

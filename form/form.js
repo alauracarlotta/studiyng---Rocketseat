@@ -3,9 +3,12 @@ const fields = document.querySelectorAll("[required]");
 // console.log(fields);
 
 function customValidation(event) {
+    
+    // eliminar o bubble
+    event.preventDefault();
+    
     const field = event.target;
     //console.log(field.validity)
-
 
 
     // lógica para verificar se existem erros
@@ -30,11 +33,13 @@ function customValidation(event) {
 
         return foundError;
     }
+
+
     
     const error = verifyErrors();
     console.log("Error Exists", error);
 
-    if (error){
+    /* if (error){
 
         // trocar mensagem de required
         field.setCustomValidity("Esse campo é obrigatório");
@@ -42,7 +47,7 @@ function customValidation(event) {
     } else {
 
         field.setCustomValidity("");
-    }
+    } */
 }
 
 for (let field of fields) {
@@ -76,7 +81,7 @@ for (let field of fields) {
 
 document.querySelector("form")
 .addEventListener("submit", event => {
-    console.log("Pode enviar o formulaŕoio");
+    console.log("Pode enviar o formulário");
 
     // não vai enviar o formulaŕio
     event.preventDefault();
